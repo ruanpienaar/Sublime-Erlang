@@ -20,6 +20,7 @@
   "patterns": [
     {"include": "#comment"},
     {"include": "#record-usage"},
+    {"include": "#maps-usage"},
     {"include": "#macro-usage"},
     {"include": "#expression"},
     {"include": "#illegal-keyword"},
@@ -952,6 +953,55 @@
           "captures": {
             "1": {"name": "storage.type.record.erlang"}
           }
+        }
+      ]
+    },
+
+    "maps-usage": {
+      "patterns": [
+        {
+          "begin": "(#)\\s*(\\{)",
+          "beginCaptures": {
+            "1": {"name": "storage.type.maps.erlang"},
+            "2": {"name": "punctuation.type.maps.begin.erlang"}
+          },
+          "end": "(\\})",
+          "endCaptures": {
+            "1": {"name": "punctuation.type.maps.end.erlang"}
+          },
+          "name": "meta.maps-usage.erlang",
+          "patterns": [
+            {
+              "begin": "(?<=\\{|(,))",
+              "beginCaptures": {
+                "2": {"name": "punctuation.separator.type.maps.erlang"}
+              },
+              "end": "(:=|=>)",
+              "endCaptures": {
+                "1": {"name": "keyword.operator.assignment.erlang"}
+              },
+              "patterns": [
+                {"include": "#tuple"},
+                {"include": "#list"},
+                {"include": "#binary"},
+                {"include": "#parenthesized-expression"},
+                {"include": "#character"},
+                {"include": "#number"},
+                {"include": "#atom"},
+                {"include": "#string"},
+                {"include": "#variable"},
+                {"include": "#comment"},
+                {"include": "#macro-usage"}
+              ]
+            },
+            {
+              "begin": "(?<=(:=|=>))",
+              "end": "(?=(,|\\}))",
+              "patterns": [
+                {"include": "$self"}
+              ]
+            }
+          ]
         }
       ]
     },
