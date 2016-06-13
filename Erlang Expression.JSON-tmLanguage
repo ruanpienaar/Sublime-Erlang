@@ -476,7 +476,7 @@
           "name": "meta.function-call.erlang",
           "patterns": [
             {
-              "begin": "(?:(erlang)\\s*(:)\\s*)?(abs|binary_part|bit_size|byte_size|element|float|hd|is_atom|is_binary|is_bitstring|is_boolean|is_float|is_function|is_integer|is_list|is_number|is_pid|is_port|is_record|is_reference|is_tuple|length|node|round|self|size|tl|trunc|tuple_size)\\s*(\\()",
+              "begin": "(?:(erlang)\\s*(:)\\s*)?(abs|binary_part|bit_size|byte_size|element|float|hd|is_atom|is_binary|is_bitstring|is_boolean|is_float|is_function|is_integer|is_list|is_number|is_pid|is_port|is_record|is_reference|is_tuple|length|node|round|self|size|tl|trunc|tuple_size|is_map)\\s*(\\()",
               "beginCaptures": {
                 "1": {"name": "meta.function.module.erlang"},
                 "2": {"name": "punctuation.separator.module-function.erlang"},
@@ -971,10 +971,11 @@
           },
           "name": "meta.maps-usage.erlang",
           "patterns": [
+            {"include": "#macro-usage"},
             {
-              "begin": "(?<=\\{|(,))",
+              "begin": "(?<=(\\{)|(,))",
               "beginCaptures": {
-                "2": {"name": "punctuation.separator.type.maps.erlang"}
+                "3": {"name": "punctuation.separator.type.maps.erlang"}
               },
               "end": "(:=|=>)",
               "endCaptures": {
