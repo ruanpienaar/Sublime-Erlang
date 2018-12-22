@@ -1,0 +1,44 @@
+<snippet>
+	<scope>source.erlang - source.erlang.expression</scope>
+	<description>gen_statem Callbacks</description>
+	<content><![CDATA[-export([start_link/0]).
+
+-behaviour(gen_statem).
+-export([callback_mode/0, init/1, terminate/3, code_change/4]).
+-export([handle_event/4]).
+
+-define(SERVER, ?MODULE).
+
+start_link() ->
+	gen_statem:start_link({local, ?SERVER}, ?MODULE, {}, []).
+
+-spec callback_mode() -> gen_statem:callback_mode_result().
+callback_mode() -> 
+	handle_event_function.
+
+%% @private
+init({}) ->
+	{ok, ${1}, undefined}.
+
+-spec handle_event('enter',
+		   OldState :: term(),
+		   State :: term(),
+		   Data :: term()) ->
+			  gen_statem:state_enter_result(term());
+		  (gen_statem:event_type(),
+		   Msg :: term(),
+		   State :: term(),
+		   Data :: term()) ->
+			  gen_statem:event_handler_result(term()).
+handle_event({call,From}, _Msg, State, Data) ->
+    {next_state, State, Data, [{reply,From,ok}]}.
+
+%% @private
+terminate(_Reason, _StateName, _State) ->
+	void.
+
+%% @private
+code_change(_OldVsn, StateName, State, _Extra) ->
+	{ok, StateName, State}.
+]]></content>
+</snippet>
