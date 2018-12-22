@@ -1,6 +1,6 @@
 <snippet>
 	<scope>source.erlang - source.erlang.expression</scope>
-	<description>gen_statem Callbacks</description>
+	<description>gen_statem state function Callbacks</description>
 	<content><![CDATA[-export([start_link/0]).
 
 -behaviour(gen_statem).
