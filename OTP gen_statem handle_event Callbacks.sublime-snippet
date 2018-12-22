@@ -18,7 +18,7 @@ callback_mode() ->
 
 %% @private
 init({}) ->
-	{ok, ${1}, undefined}.
+	{ok, initial_state, undefined}.
 
 -spec handle_event('enter',
 		   OldState :: term(),
@@ -30,8 +30,12 @@ init({}) ->
 		   State :: term(),
 		   Data :: term()) ->
 			  gen_statem:event_handler_result(term()).
-handle_event({call,From}, _Msg, State, Data) ->
-    {next_state, State, Data, [{reply,From,ok}]}.
+handle_event({call, From}, _Msg, State, Data) ->
+    {next_state, State, Data, [{reply,From,ok}]};
+handle_event(cast, _Msg, State, Data) ->
+    {next_state, State, Data, []};
+handle_event(info, _Msg, State, Data) ->
+    {next_state, State, Data, []}.
 
 %% @private
 terminate(_Reason, _StateName, _State) ->
