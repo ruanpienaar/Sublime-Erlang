@@ -1,24 +1,34 @@
 <snippet>
 	<scope>source.erlang - source.erlang.expression</scope>
 	<description>gen_statem handle_event Callbacks</description>
-	<content><![CDATA[-export([start_link/0]).
+	<content><![CDATA[-export([
+    start_link/0
+]).
+
+-include_lib("kernel/include/logger.hrl").
 
 -behaviour(gen_statem).
--export([callback_mode/0, init/1, terminate/3, code_change/4]).
--export([handle_event/4]).
 
--define(SERVER, ?MODULE).
+-export([
+    callback_mode/0,
+    init/1,
+    terminate/3,
+    code_change/4
+]).
+
+-export([
+    handle_event/4
+]).
 
 start_link() ->
-	gen_statem:start_link({local, ?SERVER}, ?MODULE, {}, []).
+	gen_statem:start_link({local, ?MODULE}, ?MODULE, {}, []).
 
 -spec callback_mode() -> gen_statem:callback_mode_result().
 callback_mode() -> 
-	handle_event_function.
+	[handle_event_function].
 
-%% @private
 init({}) ->
-	{ok, initial_state, undefined}.
+	{ok, initial_state, _Data=#{}}.
 
 -spec handle_event('enter',
 		   OldState :: term(),
@@ -30,6 +40,12 @@ init({}) ->
 		   State :: term(),
 		   Data :: term()) ->
 			  gen_statem:event_handler_result(term()).
+handle_event(T=timeout, Msg, State, Data) ->
+    ?LOG_WARNING("Unhandled ~p ~p", [T, Msg]),
+    {next_state, State, Data, []};
+handle_event(T=internal, Msg, State, Data) ->
+    ?LOG_WARNING("Unhandled ~p ~p", [T, Msg]),
+    {next_state, State, Data, []};
 handle_event({call, From}, _Msg, State, Data) ->
     {next_state, State, Data, [{reply,From,ok}]};
 handle_event(cast, _Msg, State, Data) ->
@@ -37,12 +53,10 @@ handle_event(cast, _Msg, State, Data) ->
 handle_event(info, _Msg, State, Data) ->
     {next_state, State, Data, []}.
 
-%% @private
 terminate(_Reason, _StateName, _State) ->
-	void.
+    void.
 
-%% @private
 code_change(_OldVsn, StateName, State, _Extra) ->
-	{ok, StateName, State}.
+    {ok, StateName, State}.
 ]]></content>
 </snippet>
