@@ -1,16 +1,26 @@
 <snippet>
 	<scope>source.erlang - source.erlang.expression</scope>
         <description>Eunit Test</description>
-        <content><![CDATA[-include_lib("eunit/include/eunit.hrl").
+        <content><![CDATA[
+
+-include_lib("eunit/include/eunit.hrl").
+
+%% NB: list should be sorted
+-define(MECK_MODS, [
+
+]).
 
 unit_test_() ->
     {
         setup,
         fun() ->
-            ok
+            ok = meck:new(?MECK_MODS, [passthrough])
         end,
         fun(_) ->
-            ok
+            ?assertEqual(
+                ?MECK_MODS,
+                lists:sort(meck:unload())
+            )
         end,
         [
             {"xxx", fun xxx/0}
@@ -22,6 +32,5 @@ xxx() ->
         2,
         1+1
     ).
-
 ]]></content>
 </snippet>
