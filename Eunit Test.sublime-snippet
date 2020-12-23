@@ -13,7 +13,7 @@ unit_test_() ->
             ok
         end,
         [
-            {"xxx", xxx/0}
+            {"xxx", fun xxx/0}
         ]
     }.
 
