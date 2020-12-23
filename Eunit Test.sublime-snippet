@@ -10,6 +10,7 @@ unit_test_() ->
             ok
         end,
         fun(_) ->
+            ok
         end,
         [
             {"xxx", xxx/0}
