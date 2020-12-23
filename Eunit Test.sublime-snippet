@@ -1,0 +1,26 @@
+<snippet>
+	<scope>source.erlang - source.erlang.expression</scope>
+        <description>Eunit Test</description>
+        <content><![CDATA[-include_lib("eunit/include/eunit.hrl").
+
+unit_test_() ->
+    {
+        setup,
+        fun() ->
+            ok
+        end,
+        fun(_) ->
+        end,
+        [
+            {"xxx", xxx/0}
+        ]
+    }.
+
+xxx() ->
+    ?assertEqual(
+        2,
+        1+1
+    ).
+
+]]></content>
+</snippet>
